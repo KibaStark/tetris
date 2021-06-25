@@ -11,25 +11,15 @@ ctx.scale(BLOCK_SIZE, BLOCK_SIZE); // scale =  blocs = 1, au lieux de calculer l
 
 
 
-
-let board = new Board();
+let board = new Board(ctx);
 
 time = { start: 0, elapsed: 0, level: 1000 };
 
     
+function play() {
+  board.play();
+}
 
-    function play() {
-      animate();
-        board.reset();  //restart
-        // console.table(board.grid); // vérifie si le canvas est en tableau de nombre déclarer à zero
-
-        let piece = new Piece(ctx);
-        piece.animate();
-
-        
-        board.piece = piece;
-        
-    }
 
 
     
@@ -68,49 +58,13 @@ time = { start: 0, elapsed: 0, level: 1000 };
           while (board.valid(p)) {
             board.piece.move(p);   
             p = moves[KEY.DOWN](board.piece);
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); 
+        
+            board.piece.draw(); // dessine la piece
           }
         }
       
         
       }
-      
     }
   });
-  
-  function animate(now = 0) {
-          
-    // met à jour le temps écoulé
-    time.elapsed = now - time.start;
-    
-    // Si le temps écoulé a dépassé le temps pour le niveau actuel
-    if (time.elapsed > time.level) {
-    
-      // recommence le compter maintenant
-      time.start = now;   
-      this.drop(); 
-      console.log('timer'); 
-    }
-    
-    // efface le canvas avant de dessiner le nouveau
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); 
-    
-    board.draw();  
-    requestId = requestAnimationFrame(animate); //peint un cadre, puis se replanifie
-  }
-  
-
-
-  function drop() {
-    
-    let p = moves[KEY.DOWN](board.piece);
-    if (board.valid(p)) {  
-      board.piece.move(p);
-    } else {
-      board.freeze();
-    }
-  }
-  
-  function draw(){
-    this.piece.draw();
-    this.drawBoard();
-  }

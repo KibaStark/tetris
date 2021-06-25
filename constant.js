@@ -2,6 +2,16 @@ const COLS = 10;   //colonnes
 const ROWS = 20;   // lignes
 const BLOCK_SIZE = 30; // blocs
 
+const POINTS = {
+  SINGLE: 100,
+  DOUBLE: 300,
+  TRIPLE: 500,
+  TETRIS: 800,
+  SOFT_DROP: 1,
+  HARD_DROP: 2
+}
+Object.freeze(POINTS);
+
 
 
 const KEY = {

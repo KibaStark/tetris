@@ -1,13 +1,6 @@
 class Piece {  
     constructor(ctx) {
       this.ctx = ctx;
-      this.color = 'blue';
-      this.shape = [ //forme à plat du J
-        [2, 0, 0], 
-        [2, 2, 2], 
-        [0, 0, 0]
-      ];
-      
       // position de départ
       this.x = 3;
       this.y = 0;
