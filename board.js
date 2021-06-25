@@ -17,7 +17,7 @@ class Board {
     this.piece.animate();
   }
   
-    // restart le canvas quant on fait une nouvelle partie
+    // tableau
     reset() {
       this.grid = this.getEmptyBoard();
     }
@@ -29,21 +29,26 @@ class Board {
       );
     }
 
-    isEmpty(x, y){
+    isEmpty(x, y){console.log('isEmpty', this.grid[y] && this.grid[y][x] === 0);
       return this.grid[y] && this.grid[y][x] === 0;
     }
-    insideWalls(x){
-      return (x >=0 && x<10)
+    insideWalls(x){  console.log('insadeWalls', x >=0 && x<=9,x);
+      return (x >=0 && x<COLS)
     }
     aboveFloor(y){
-      return (y <20)
+      return (y <= ROWS)
     }
     valid(p) { // fonction de coalision
       return p.shape.every((row, dy) => {   // dy = toute la forme du tableau
         return row.every((value, dx) => {   // dx = toute la ligne
           let x = p.x + dx; // ajoute la position à x pour la bloquer dans le tableau
           let y = p.y + dy;
-
+          console.log(x, y);
+// console.log(            value === 0 ||
+//   (this.isEmpty(x, y) && // dans le tableau
+//  this.insideWalls(x) && // x interieur des murs
+//   this.aboveFloor(y) // au dessus du sol
+// ));
           return (
             value === 0 ||
             (this.isEmpty(x, y) && // dans le tableau
@@ -85,6 +90,7 @@ class Board {
         row.forEach((value, x) => {
           if (value > 0) {
             this.grid[y + this.piece.y][x + this.piece.x] = value;  // met les valeur x et y des tétrominos dans le tableau en grid
+            // console.table(board.grid);
           }
         }); 
       });
@@ -95,7 +101,8 @@ class Board {
 
     drawBoard() { // dessine le tableau
       this.grid.forEach((row, y) => {         // prend les valeurs ligne et y du tableau
-        row.forEach((value, x) => {           // prend les valeurs x du tableau
+        row.forEach((value, x) => { 
+          // console.table(board.grid)         // prend les valeurs x du tableau
           if (value > 0) {
             this.ctx.fillStyle = COLORS[value]; // color les pieces de la valeur de const COLORS
             this.ctx.fillRect(x, y, 1, 1);     // dessine
@@ -115,14 +122,16 @@ class Board {
         // recommence le compter maintenant
         time.start = now;   
         this.drop(); 
-        // console.log('timer'); 
+        // console.log('timer');
 
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); 
+ 
       }
       // efface le canvas avant de dessiner le nouveau
 
 
-        
-      
+      this.draw();  
+
       requestAnimationFrame(this.animate.bind(this)); //peint un cadre, puis se replanifie
     }
 
@@ -150,7 +159,7 @@ class Board {
         this.draw();  
       } else {
         this.freeze();
-        console.table(board.grid);  
+        console.table(board.grid); 
         this.clearLines();
         this.createPiece();
       }
